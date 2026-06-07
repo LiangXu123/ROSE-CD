@@ -21,6 +21,8 @@ Liang Xu, Longfei Felix Yan, W. Bastiaan Kleijn
 
 ## 📊 Performance Benchmark
 
+### VoiceBank-DEMAND (Speech Enhancement)
+
 The table below presents a comparative analysis between the proposed **1-step Consistency Training (CT)** model and the baseline **30-step Teacher** model, evaluated on the VoiceBank-DEMAND test corpus. The CT framework not only accelerates inference by an order of magnitude but also yields statistically significant improvements across all established objective metrics.
 
 | Model | Steps | PESQ (↑) | ESTOI (↑) | SI-SDR (↑) | SI-SIR (↑) | SI-SAR (↑) |
@@ -28,14 +30,39 @@ The table below presents a comparative analysis between the proposed **1-step Co
 | **Teacher** | 30 | 2.89 ± 0.67 | 0.86 ± 0.10 | 16.7 ± 3.7 | 26.7 ± 5.8 | 17.6 ± 3.4 |
 | **CT (Ours)** | **1** | **3.47** ± 0.67 | **0.87** ± 0.10 | **19.2** ± 3.6 | **29.2** ± 5.4 | **20.0** ± 3.7 |
 
+### EARS-WHAM & EARS-REVERB (Speech Enhancement & Dereverberation)
+
+The tables below present a comparative analysis between the proposed **ROSE-CD** model and the baseline **SGMSE+** model, evaluated on the EARS-WHAM (Speech Enhancement) and EARS-REVERB (Speech Dereverberation) test corpora.
+
+#### Speech Enhancement (EARS-WHAM)
+
+| Model | RT | Para | GMACs (1 s) | WER (↓) | PESQ (↑) | SI-SDR (↑) | ESTOI (↑) | DiMOS (↑) | WVMOS (↑) | NISQA (↑) | SCOREQ (↑) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **SGMSE+** | ❌ | 65.59M | 132.89×60 | 18.65% | 2.20 | 14.2 | 0.84 | **3.93** | **2.86** | **3.66** | 3.48 |
+| **ROSE-CD (Ours)** | ❌ | 59.62M | 132.88×1 | **18.19%** | **2.81** | **15.3** | **0.85** | 3.92 | 2.60 | 3.61 | **3.50** |
+
+#### Speech Dereverberation (EARS-REVERB)
+
+| Model | RT | Para | GMACs (1 s) | WER (↓) | PESQ (↑) | SI-SDR (↑) | ESTOI (↑) | DiMOS (↑) | WVMOS (↑) | NISQA (↑) | SCOREQ (↑) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **SGMSE+** | ❌ | 65.59M | 132.89×60 | 17.32% | 1.95 | **-12.6** | 0.76 | 3.48 | 2.16 | **3.58** | **2.69** |
+| **ROSE-CD (Ours)** | ❌ | 59.62M | 132.88×1 | **15.78%** | **2.69** | -13.9 | **0.82** | **3.75** | **2.70** | 3.14 | 2.66 |
+
 ---
 
 ## 🔗 Pre-trained Models & Audio Samples
 
-We release the pre-trained checkpoints alongside corresponding enhanced audio outputs for both the 30-step teacher model and our 1-step CT model.
+We release the pre-trained checkpoints alongside corresponding enhanced audio outputs for our models across different benchmarks.
 
-- **Checkpoints**: [Download via Google Drive](https://drive.google.com/file/d/1ekzJQidIojhjlj6oaUzQBKp4Pil6jIz7/view?usp=sharing)
-- **Enhanced Audio Outputs**: [Download via Google Drive](https://drive.google.com/file/d/17hyzn2CWzzpDg44spLp8NJJbiDK4v_wN/view?usp=sharing)
+**VoiceBank-DEMAND:**
+
+- **Checkpoints**: [Google Drive](https://drive.google.com/file/d/1ekzJQidIojhjlj6oaUzQBKp4Pil6jIz7/view?usp=sharing)
+- **Enhanced Audio Outputs**: [Google Drive](https://drive.google.com/file/d/17hyzn2CWzzpDg44spLp8NJJbiDK4v_wN/view?usp=sharing)
+
+**EARS Corpora:**
+
+- **Speech Enhancement Checkpoint (EARS-WHAM)**: [ROSE-CD_SE](https://drive.google.com/drive/folders/13Hr1DRMBP2Dkv6b6KlPqrsApdubydbNy?usp=sharing), [SGMSE++_SE](https://drive.google.com/drive/folders/1_-G-mokSXXZl6J0VbZTl0qMPrf7nmW3G?usp=sharing)
+- **Speech Dereverberation Checkpoint (EARS-REVERB)**: [ROSE-CD_REVERB](https://drive.google.com/drive/folders/1OEttI0GjjGagtT7B_gcswB6SK6DAUVQT?usp=sharing), [SGMSE++_REVERB](https://drive.google.com/drive/folders/1FX8GkbwcYA2LUQ749cv_FXqsEy2ss-2c?usp=sharing)
 
 **Usage instructions:**
 Extract and place the downloaded checkpoints into the designated `logs/` directory (e.g., `./logs/`). Ensure that the checkpoint paths within the evaluation scripts (`scripts/eval_CT.sh` or `scripts/eval_teacher.sh`) are correctly updated to replicate the reported benchmark results.
@@ -67,11 +94,12 @@ Our data preprocessing pipeline is adapted from the established [SGMSE+](https:/
 
 ## 🚀 Training Framework: Consistency Training (CT) and Consistency Distillation (CD)
 
-Consistency Models inherently support two distinct training paradigms: 
+Consistency Models inherently support two distinct training paradigms:
+
 1. **Consistency Distillation (CD):** Distilling knowledge from a pre-trained teacher diffusion model.
 2. **Consistency Training (CT):** Direct training on the empirical data distribution without the necessity of a teacher model.
 
-While our published paper primarily formalizes and evaluates the method utilizing **Consistency Distillation (CD)**, subsequent empirical analyses revealed that applying **Consistency Training (CT)** within the exact same codebase yields identical performance. Because CT completely bypasses the need to rely on a pre-trained teacher model, it significantly streamlines the training procedure and circumvents teacher-induced approximation errors. 
+While our published paper primarily formalizes and evaluates the method utilizing **Consistency Distillation (CD)**, subsequent empirical analyses revealed that applying **Consistency Training (CT)** within the exact same codebase yields identical performance. Because CT completely bypasses the need to rely on a pre-trained teacher model, it significantly streamlines the training procedure and circumvents teacher-induced approximation errors.
 
 Therefore, in this repository, we officially release both the **Teacher model training** scripts and the **CT model training** scripts, as CT achieves the same state-of-the-art one-step enhancement performance as CD, but with a much simpler pipeline.
 
