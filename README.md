@@ -54,6 +54,8 @@ The tables below present a comparative analysis between the proposed **ROSE-CD**
 
 We release the pre-trained checkpoints alongside corresponding enhanced audio outputs for our models across different benchmarks.
 
+🤗 **All checkpoints and enhanced audio are also available on Hugging Face:** [LIANGXU123/ROSE-CD](https://huggingface.co/LIANGXU123/ROSE-CD)
+
 **VoiceBank-DEMAND:**
 
 - **Checkpoints**: [Google Drive](https://drive.google.com/file/d/1ekzJQidIojhjlj6oaUzQBKp4Pil6jIz7/view?usp=sharing)
@@ -66,6 +68,14 @@ We release the pre-trained checkpoints alongside corresponding enhanced audio ou
 
 **Usage instructions:**
 Extract and place the downloaded checkpoints into the designated `logs/` directory (e.g., `./logs/`). Ensure that the checkpoint paths within the evaluation scripts (`scripts/eval_CT.sh` or `scripts/eval_teacher.sh`) are correctly updated to replicate the reported benchmark results.
+
+**Download via Hugging Face CLI:**
+
+```bash
+pip install huggingface_hub
+huggingface-cli download LIANGXU123/ROSE-CD --local-dir ./
+# To download a specific subdirectory, use: --include "logs/CT_pesq5e-4_L2/*"
+```
 
 ---
 
@@ -156,6 +166,12 @@ If this codebase or methodology proves useful in your research, please consider 
   doi={10.1109/WASPAA66052.2025.11230988}
 }
 ```
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
