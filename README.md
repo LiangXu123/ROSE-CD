@@ -6,7 +6,7 @@ This repository provides the official PyTorch implementation of the following pa
 Liang Xu, Longfei Felix Yan, W. Bastiaan Kleijn  
 *IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA), 2025*
 
-🔗 [**Project Website**](https://liangxu123.github.io/rosecd/)  |  📄 [**arXiv Preprint**](https://arxiv.org/abs/2507.05688)  |  📄 [**IEEE Xplore**](https://ieeexplore.ieee.org/document/11230988)
+🔗 [**Project Website**](https://liangxu123.github.io/rosecd/)  |  🤗 [**Hugging Face**](https://huggingface.co/LIANGXU123/ROSE-CD)  |  📄 [**arXiv Preprint**](https://arxiv.org/abs/2507.05688)  |  📄 [**IEEE Xplore**](https://ieeexplore.ieee.org/document/11230988)
 
 ---
 
@@ -50,35 +50,6 @@ The tables below present a comparative analysis between the proposed **ROSE-CD**
 
 ---
 
-## 🔗 Pre-trained Models & Audio Samples
-
-We release the pre-trained checkpoints alongside corresponding enhanced audio outputs for our models across different benchmarks.
-
-🤗 **All checkpoints and enhanced audio are also available on Hugging Face:** [LIANGXU123/ROSE-CD](https://huggingface.co/LIANGXU123/ROSE-CD)
-
-**VoiceBank-DEMAND:**
-
-- **Checkpoints**: [Google Drive](https://drive.google.com/file/d/1ekzJQidIojhjlj6oaUzQBKp4Pil6jIz7/view?usp=sharing)
-- **Enhanced Audio Outputs**: [Google Drive](https://drive.google.com/file/d/17hyzn2CWzzpDg44spLp8NJJbiDK4v_wN/view?usp=sharing)
-
-**EARS Corpora:**
-
-- **Speech Enhancement Checkpoint (EARS-WHAM)**: [ROSE-CD_SE](https://drive.google.com/drive/folders/13Hr1DRMBP2Dkv6b6KlPqrsApdubydbNy?usp=sharing), [SGMSE++_SE](https://drive.google.com/drive/folders/1_-G-mokSXXZl6J0VbZTl0qMPrf7nmW3G?usp=sharing)
-- **Speech Dereverberation Checkpoint (EARS-REVERB)**: [ROSE-CD_REVERB](https://drive.google.com/drive/folders/1OEttI0GjjGagtT7B_gcswB6SK6DAUVQT?usp=sharing), [SGMSE++_REVERB](https://drive.google.com/drive/folders/1FX8GkbwcYA2LUQ749cv_FXqsEy2ss-2c?usp=sharing)
-
-**Usage instructions:**
-Extract and place the downloaded checkpoints into the designated `logs/` directory (e.g., `./logs/`). Ensure that the checkpoint paths within the evaluation scripts (`scripts/eval_CT.sh` or `scripts/eval_teacher.sh`) are correctly updated to replicate the reported benchmark results.
-
-**Download via Hugging Face CLI:**
-
-```bash
-pip install huggingface_hub
-huggingface-cli download LIANGXU123/ROSE-CD --local-dir ./
-# To download a specific subdirectory, use: --include "logs/CT_pesq5e-4_L2/*"
-```
-
----
-
 ## ⚙️ Installation & Setup
 
 We recommend utilizing an isolated virtual environment with Python 3.11. To initialize the environment and install dependencies, execute:
@@ -92,7 +63,20 @@ cd rosecd
 pip install -r requirements.txt
 ```
 
-*Note: For experiment tracking via Weights & Biases (W&B), please configure your environment using `wandb login` prior to initiating training.*
+*Note: For experiment tracking via Weights & Biases (W&B), please configure your environment using `wandb login` prior to initiating training. By default, `train.sh` sets `WANDB_MODE=dryrun` to run offline.*
+
+### 🤗 Quick Start: Download Models & Outputs
+
+Download all checkpoints, logs, and outputs from Hugging Face directly into your repository:
+
+```bash
+# Via Hugging Face CLI
+hf download LIANGXU123/ROSE-CD --local-dir .
+
+# Or via Git LFS
+git lfs install
+git clone https://huggingface.co/LIANGXU123/ROSE-CD
+```
 
 ---
 
